@@ -3,25 +3,25 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class Recommendations(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-class RecommendationItem(models.Model):
-    recommendations = models.ForeignKey(Recommendations, on_delete=models.CASCADE, related_name="recommendations")
-    title = models.CharField(max_length = 255, blank=True)
-    timestamp = models.DateTimeField(default=datetime.now)
-
 class Track(models.Model):
-    recommendation_item = models.ForeignKey(RecommendationItem, on_delete=models.CASCADE, related_name="recommendation_item")
-    track_id = models.CharField()
+    track_id = models.CharField(db_index=True)
     track_name = models.CharField()
     track_uri = models.CharField()
     album_name = models.CharField()
     album_art = models.URLField()
     album_release_date = models.DateField()
-    artist_id = models.CharField()
+    artist_id = models.CharField(db_index=True)
     artist_name = models.CharField()
     artist_uri = models.CharField()
+
+class Recommendation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length = 255, blank=True)
+    timestamp = models.DateTimeField(default=datetime.now)
+
+class RecommendationItem(models.Model):
+    recommendation = models.ForeignKey(Recommendation, on_delete=models.CASCADE)
+    track = models.ForeignKey(Track, on_delete=models.CASCADE)
 
 # class TrackAudioFeatures(models.Model):
 #     track = models.OneToOneField(Track, on_delete=models.CASCADE, related_name="track")
