@@ -4,15 +4,15 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Track(models.Model):
-    track_id = models.CharField(db_index=True)
-    track_name = models.CharField()
-    track_uri = models.CharField()
-    album_name = models.CharField()
+    track_id = models.CharField(max_length=255, db_index=True)
+    track_name = models.CharField(max_length=255)
+    track_uri = models.CharField(max_length=255)
+    album_name = models.CharField(max_length=255)
     album_art = models.URLField()
     album_release_date = models.DateField()
-    artist_id = models.CharField(db_index=True)
-    artist_name = models.CharField()
-    artist_uri = models.CharField()
+    artist_id = models.CharField(max_length=255, db_index=True)
+    artist_name = models.CharField(max_length=255)
+    artist_uri = models.CharField(max_length=255)
 
 class Recommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

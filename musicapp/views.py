@@ -1,6 +1,7 @@
 from requests import Response
 from .models import Track, RecommendationItem, Recommendation
 from .serializers import TrackSerializer, RecommendationItemSerializer, RecommendationSerializer
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 import spotipy
@@ -45,6 +46,15 @@ class RecommendationView(generics.ListCreateAPIView):
         return Response({'message': 'Successfully got recommendations and added to database'})
     
 
-class RecommendationItemView(generics.ListAPIView, generics.RetrieveUpdateDestroyAPIView):
+class RecommendationItemView(generics.ListAPIView, generics.RetrieveDestroyAPIView):
     serializer_class = RecommendationItemSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        selected_recommendation = get_object_or_404(Recommendation, pk = self.kwargs.get('pk'))
+        return RecommendationItem.objects.filter(recommendation = selected_recommendation)
+
+    def destroy(self, request, *args, **kwargs):
+        selected_recommendation = get_object_or_404(Recommendation, pk = self.kwargs.get('pk'))
+        selected_recommendation.delete()
+        return Response({'message': "Deleted recommendation " + str(selected_recommendation.id)})
