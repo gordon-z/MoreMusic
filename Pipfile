@@ -7,9 +7,14 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 djangorestframework-xml = "*"
-djoser = "*"
 djangorestframework-simplejwt = "*"
 spotipy = "*"
+pyjwt = "*"
+django-cors-headers = "*"
+pytz = "*"
+sqlparse = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+asgiref = "*"
 
 [dev-packages]
-
