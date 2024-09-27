@@ -8,11 +8,12 @@ sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="7a45f11573
 data = sp.search(q="Fireflies", type=["track"], market="ca")
 song_id = data['tracks']['items'][0]['id']
 
-output = sp.recommendations(seed_tracks=[song_id], limit=3)
+output = sp.recommendations(seed_tracks=[song_id], limit=1)
 recommendations = []
 
 for recc in output['tracks']:
-    recommendations.append({recc['name']: [artist['name'] for artist in recc['artists']]})
+    recommendations.append({"track_id" : recc['id'], "track_name" : recc['name'], "track_uri" : recc['uri'], "album_name" : recc['album']['name'], 
+                                             "album_art" : recc['album']['images'][0]['url'], "album_release_date" : recc['album']['release_date'], "artist_id" : recc['artists'][0]['id'],
+                                             "artist_name" : recc['artists'][0]['name'], "artist_uri" : recc['artists'][0]['uri']})
 
 print(recommendations)
-

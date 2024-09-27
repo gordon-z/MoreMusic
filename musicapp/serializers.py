@@ -2,10 +2,16 @@ from rest_framework import serializers
 from .models import Recommendation, Track
 from django.contrib.auth.models import User
 
+class RecommendationSerializerPOST(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendation
+        fields = ['user', 'title', 'timestamp']
+        extra_kwargs = {"user": {"read_only": True}}
+
 class RecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recommendation
-        fields = '__all__'
+        fields = ['user', 'title', 'tracks', 'timestamp']
         extra_kwargs = {"user": {"read_only": True}}
 
 class TrackSerializer(serializers.ModelSerializer):
