@@ -22,7 +22,7 @@ class TrackView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class RecommendationView(generics.ListCreateAPIView):
+class RecommendationView(generics.ListCreateAPIView, generics.RetrieveDestroyAPIView):
     serializer_class = RecommendationSerializer
     permission_classes = [IsAuthenticated]
 
@@ -72,12 +72,12 @@ class RecommendationView(generics.ListCreateAPIView):
         else:
             return Response({'message': 'Error: ' + serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
-class RecommendationDeleteView(generics.DestroyAPIView):
-    serializer_class = RecommendationSerializer
-    permission_classes = [IsAuthenticated]
+# class RecommendationDeleteView(generics.DestroyAPIView):
+#     serializer_class = RecommendationSerializer
+#     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return Recommendation.objects.filter(user = self.request.user)
+#     def get_queryset(self):
+#         return Recommendation.objects.filter(user = self.request.user)
 
 # class RecommendationItemView(generics.ListAPIView, generics.RetrieveDestroyAPIView):
 #     serializer_class = RecommendationItemSerializer
