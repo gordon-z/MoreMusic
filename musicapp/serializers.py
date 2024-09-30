@@ -8,17 +8,19 @@ class RecommendationSerializerPOST(serializers.ModelSerializer):
         fields = ['user', 'title', 'timestamp']
         extra_kwargs = {"user": {"read_only": True}}
 
-class RecommendationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recommendation
-        fields = ['user', 'title', 'tracks', 'timestamp']
-        extra_kwargs = {"user": {"read_only": True}}
 
 class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
-        fields = '__all__'
+        fields = ['track_id', 'track_name', 'track_uri', 'album_name', 'album_art', 'album_release_date', 'artist_id', 'artist_name', 'artist_uri']
 
+class RecommendationSerializer(serializers.ModelSerializer):
+    tracks = TrackSerializer(many=True)
+    
+    class Meta:
+        model = Recommendation
+        fields = ['user', 'title', 'tracks', 'timestamp']
+        extra_kwargs = {"user": {"read_only": True}}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
