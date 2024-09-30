@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.contrib.auth.models import User
+from decouple import config
 
 # Create your views here.
 
@@ -39,8 +40,8 @@ class RecommendationView(generics.ListCreateAPIView):
             seed_type = self.request.data['seed_type']
             seed = self.request.data['seed']
             num_results = self.request.data['num_results']
-            sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="7a45f115736c4d6e8e31ecaf6b03f2a9",
-                                                            client_secret="206a8900c2e64d908d6e1beaf44c501a"))
+            sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id = config('SPOTIFY_CLIENT_ID'),
+                                                            client_secret = config('SPOTIFY_CLIENT_SECRET')))
             
             if seed_type == "artist":
                 requested_artist = sp.search(q=seed, type=[seed_type], market="ca")
