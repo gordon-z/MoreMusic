@@ -10,7 +10,7 @@ class Track(models.Model):
     track_uri = models.CharField(max_length=255)
     album_name = models.CharField(max_length=255)
     album_art = models.URLField()
-    album_release_date = models.DateField()
+    album_release_date = models.CharField(max_length=25)
     artist_id = models.CharField(max_length=255, db_index=True)
     artist_name = models.CharField(max_length=255)
     artist_uri = models.CharField(max_length=255)

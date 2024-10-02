@@ -2,3 +2,6 @@
 */__pycache__
 .vscode
 .env
+MoreMusic.session.sql
+*/migrations/
+musicapp/test.py
