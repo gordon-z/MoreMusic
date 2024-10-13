@@ -16,5 +16,6 @@ sqlparse = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
 asgiref = "*"
+python-decouple = "*"
 
 [dev-packages]
