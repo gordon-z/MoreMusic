@@ -95,7 +95,6 @@ class RecommendationDeleteView(generics.DestroyAPIView):
 class RecommendationItemView(generics.RetrieveDestroyAPIView):
     serializer_class = RecommendationSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = "id"
 
     def get_queryset(self):
         return Recommendation.objects.filter(user = self.request.user)
