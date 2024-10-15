@@ -5,3 +5,5 @@
 MoreMusic.session.sql
 */migrations/
 musicapp/test.py
+db.sqlite3
+db.sqlite3-journal
