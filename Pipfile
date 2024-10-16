@@ -17,5 +17,6 @@ psycopg2-binary = "*"
 python-dotenv = "*"
 asgiref = "*"
 python-decouple = "*"
+async-timeout = "*"
 
 [dev-packages]

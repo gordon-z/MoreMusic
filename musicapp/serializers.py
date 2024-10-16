@@ -21,7 +21,7 @@ class TrackSerializer(serializers.ModelSerializer):
 class RecommendationSerializerPOST(serializers.ModelSerializer):
     class Meta:
         model = Recommendation
-        fields = ['id', 'user', 'title', 'timestamp']
+        fields = ['id', 'user', 'title', 'timestamp', 'seed_type', 'seed']
         read_only_fields = ['id', 'user']
 
 class RecommendationSerializer(serializers.ModelSerializer):
@@ -29,5 +29,5 @@ class RecommendationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recommendation
-        fields = ['id', 'user', 'title', 'tracks', 'timestamp']
+        fields = ['id', 'user', 'title', 'tracks', 'timestamp', 'seed_type', 'seed']
         extra_kwargs = {"user": {"read_only": True}}

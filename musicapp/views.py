@@ -80,7 +80,7 @@ class RecommendationView(generics.ListCreateAPIView):
             tracklist.append(track)
             track.save()
         
-        recommendation = Recommendation.objects.create(user = self.request.user)
+        recommendation = Recommendation.objects.create(user = self.request.user, seed_type = seed_type.title(), seed = seed)
         recommendation.tracks.set(tracklist)
         recommendation.save()
 

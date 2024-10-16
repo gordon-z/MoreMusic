@@ -17,9 +17,11 @@ class Track(models.Model):
 
 class Recommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length = 255, blank=True)
+    title = models.CharField(max_length=255, blank=True)
     tracks = models.ManyToManyField(Track)
     timestamp = models.DateTimeField(default=datetime.now)
+    seed_type = models.CharField(max_length=10)
+    seed = models.CharField(max_length=255, db_index=True)
 
 
 # class TrackAudioFeatures(models.Model):
