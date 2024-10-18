@@ -38,8 +38,13 @@ class RecommendationView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response({'message': 'Successfully got recommendations and added to database'}, status.HTTP_201_CREATED)
+            recommendation = self.perform_create(serializer)
+            if recommendation.tracks.exists():
+                return Response({'message': 'Successfully created recommendations and added to database'}, status.HTTP_201_CREATED)
+            else:
+                recommendation.delete()
+                return Response({'message': 'No tracks found; recommendation deleted.'}, status=status.HTTP_204_NO_CONTENT
+            )
         else:
             return Response({'message': 'Error: ' + serializer.errors}, status.HTTP_400_BAD_REQUEST)
 
@@ -55,7 +60,7 @@ class RecommendationView(generics.ListCreateAPIView):
             artist_id = requested_artist['artists']['items'][0]['id']
             output = sp.recommendations(seed_artists=[artist_id], limit=num_results)
         elif seed_type == "genre":
-            output = sp.recommendations(seed_genres=[seed], limit=num_results)
+            output = sp.recommendations(seed_genres=[seed.lower()], limit=num_results)
         elif seed_type == "track":
             requested_song = sp.search(q=seed, type=[seed_type], market="ca")
             song_id = requested_song['tracks']['items'][0]['id']
@@ -83,6 +88,8 @@ class RecommendationView(generics.ListCreateAPIView):
         recommendation = Recommendation.objects.create(user = self.request.user, seed_type = seed_type.title(), seed = seed)
         recommendation.tracks.set(tracklist)
         recommendation.save()
+        
+        return recommendation
 
 
 class RecommendationDeleteView(generics.DestroyAPIView):
