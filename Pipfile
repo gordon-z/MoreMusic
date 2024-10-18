@@ -18,5 +18,6 @@ python-dotenv = "*"
 asgiref = "*"
 python-decouple = "*"
 async-timeout = "*"
+gunicorn = "*"
 
 [dev-packages]
