@@ -1,0 +1,1 @@
+web: gunicorn MoreMusic.wsgi --log-file -

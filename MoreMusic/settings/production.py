@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
+from decouple import config
 import os
 
 load_dotenv()
@@ -24,9 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-from MoreMusic.settings import get_secret
-SECRET_KEY = get_secret('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -85,11 +84,11 @@ WSGI_APPLICATION = 'MoreMusic.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DB_NAME = get_secret("DB_NAME")
-DB_USER_NM = get_secret("DB_USER_NM")
-DB_USER_PW = get_secret("DB_USER_PW")
-DB_IP = get_secret("DB_IP")
-DB_PORT = get_secret("DB_PORT")
+DB_NAME = config("DB_NAME")
+DB_USER_NM = config("DB_USER_NM")
+DB_USER_PW = config("DB_USER_PW")
+DB_IP = config("DB_IP")
+DB_PORT = config("DB_PORT")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -167,8 +166,8 @@ REST_FRAMEWORK = {
 # }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
