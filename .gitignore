@@ -7,3 +7,4 @@ MoreMusic.session.sql
 musicapp/test.py
 db.sqlite3
 db.sqlite3-journal
+MoreMusic/MoreMusic/settings/local.py
