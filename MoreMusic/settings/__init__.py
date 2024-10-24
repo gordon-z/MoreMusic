@@ -1,10 +1,9 @@
 import os
-
-def get_secret(secret_id, backup=None):
-    return os.getenv(secret_id, backup)
+from decouple import config
 
 
-if get_secret('PIPELINE') == 'production':
+
+if config('PIPELINE') == 'production':
     from .production import *
 else:
     from .local import *
