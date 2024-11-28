@@ -1,3 +1,6 @@
+UPDATE: November 27 2024
+Spotify has removed the recommendation endpoint from its Web API. This action destroyed the core functionality of my application, preventing it from generating recommendations using the Spotify API. Link to article here: https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api
+
 https://gordon-z.github.io/MoreMusic-frontend/
 
 Frontend hosted on GitHub pages. Backend Django app and Postgres DB hosted on Render.
