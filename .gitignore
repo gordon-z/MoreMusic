@@ -5,6 +5,8 @@
 MoreMusic.session.sql
 */migrations/
 musicapp/test.py
+musicapp/gemini_test.py
 db.sqlite3
 db.sqlite3-journal
 MoreMusic/settings/local.py
+MoreMusic/settings/

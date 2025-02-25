@@ -19,5 +19,6 @@ asgiref = "*"
 python-decouple = "*"
 async-timeout = "*"
 gunicorn = "*"
+google-generativeai = "*"
 
 [dev-packages]

@@ -8,6 +8,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.contrib.auth.models import User
 from decouple import config
+import google.generativeai as genai
+import json
 
 # Create your views here.
 
@@ -55,21 +57,33 @@ class RecommendationView(generics.ListCreateAPIView):
         sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id = config('SPOTIFY_CLIENT_ID'),
                                                         client_secret = config('SPOTIFY_CLIENT_SECRET')))
         
+        genai.configure(api_key=config('GEMINI_API_KEY'))
+        model = genai.GenerativeModel('gemini-2.0-flash')
+
         if seed_type == "artist":
             requested_artist = sp.search(q=seed, type=[seed_type], market="ca")
-            artist_id = requested_artist['artists']['items'][0]['id']
-            output = sp.recommendations(seed_artists=[artist_id], limit=num_results)
+            seed_id = requested_artist['artists']['items'][0]['id']
         elif seed_type == "genre":
             output = sp.recommendations(seed_genres=[seed.lower()], limit=num_results)
         elif seed_type == "track":
             requested_song = sp.search(q=seed, type=[seed_type], market="ca")
-            song_id = requested_song['tracks']['items'][0]['id']
-            output = sp.recommendations(seed_tracks=[song_id], limit=num_results)
-
+            seed_id = requested_song['tracks']['items'][0]['id']
+            
+        prompt = f"Given the following {seed_type} {seed_id}, provide {num_results} song recommendations based on similarity in terms of audio features. Return output in format of JSON, with NO EXTRA text, with the following Spotify info: track_name, and artist_name fields."
+        raw_response = model.generate_content(prompt).text
+        # print(raw_response)
+        raw_response = raw_response.replace("```json", "").replace("```", "").strip()
+        responseJSON = json.loads(raw_response)
         
-        tracklist = []
-        for rec in output['tracks']:
+        output = {"tracks": []}
+        for track in responseJSON:
+            search_q = f"{track['track_name']} by {track['artist_name']}"
+            track_info = sp.search(q=search_q, type=["track"], market="ca")
+            output["tracks"].append(track_info)
 
+        tracklist = []
+        for track_info in output['tracks']:
+            rec = track_info['tracks']['items'][0]
             track_id = rec['id']
             track_name = rec['name']
             track_uri = rec['uri']
