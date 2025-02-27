@@ -71,7 +71,7 @@ class RecommendationView(generics.ListCreateAPIView):
             seed_name = requested_song['tracks']['items'][0]['name']
             seed_uri = requested_song['tracks']['items'][0]['uri']
             
-        prompt = f"Without previous context, given the following {seed_type} {seed_name} with URI {seed_uri}, provide {num_results} song recommendations based on similarity to your best estimate of the given seed's audio features. Make sure that the recommendations are within the same Spotify genre. Return output in format of JSON, with NO EXTRA text, with the following Spotify info: track_name, and artist_name fields."
+        prompt = f"Without previous context, given the following {seed_type} {seed_name} with URI {seed_uri}, provide {num_results} song recommendations based on similarity to your best estimate of the given seed's audio features. Make sure that the recommendations are within the same Spotify genre, but exclude both covers and songs by the same artist. Return output in format of JSON, with NO EXTRA text, with the following Spotify info: track_name, and artist_name fields."
         raw_response = model.generate_content(prompt).text
         # print(raw_response)
         raw_response = raw_response.replace("```json", "").replace("```", "").strip()

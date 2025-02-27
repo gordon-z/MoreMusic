@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -19,7 +18,7 @@ class Recommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, blank=True)
     tracks = models.ManyToManyField(Track)
-    timestamp = models.DateTimeField(default=datetime.now)
+    timestamp = models.DateTimeField(auto_now_add=True)
     seed_type = models.CharField(max_length=10)
     seed = models.CharField(max_length=255, db_index=True)
 
