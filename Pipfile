@@ -20,5 +20,6 @@ python-decouple = "*"
 async-timeout = "*"
 gunicorn = "*"
 google-generativeai = "*"
+typing_extensions = "*"
 
 [dev-packages]
