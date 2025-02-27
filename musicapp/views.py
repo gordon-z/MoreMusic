@@ -61,15 +61,17 @@ class RecommendationView(generics.ListCreateAPIView):
         model = genai.GenerativeModel('gemini-2.0-flash')
 
         if seed_type == "artist":
-            requested_artist = sp.search(q=seed, type=[seed_type], market="ca")
-            seed_id = requested_artist['artists']['items'][0]['id']
+            requested_artist = sp.search(q=seed, type=[seed_type], market="ca", limit=1)
+            seed_name = requested_artist['artists']['items'][0]['name']
+            seed_uri = requested_artist['artists']['items'][0]['uri']
         elif seed_type == "genre":
             output = sp.recommendations(seed_genres=[seed.lower()], limit=num_results)
         elif seed_type == "track":
-            requested_song = sp.search(q=seed, type=[seed_type], market="ca")
-            seed_id = requested_song['tracks']['items'][0]['id']
+            requested_song = sp.search(q=seed, type=[seed_type], market="ca", limit=1)
+            seed_name = requested_song['tracks']['items'][0]['name']
+            seed_uri = requested_song['tracks']['items'][0]['uri']
             
-        prompt = f"Given the following {seed_type} {seed_id}, provide {num_results} song recommendations based on similarity in terms of audio features. Return output in format of JSON, with NO EXTRA text, with the following Spotify info: track_name, and artist_name fields."
+        prompt = f"Without previous context, given the following {seed_type} {seed_name} with URI {seed_uri}, provide {num_results} song recommendations based on similarity to your best estimate of the given seed's audio features. Make sure that the recommendations are within the same Spotify genre. Return output in format of JSON, with NO EXTRA text, with the following Spotify info: track_name, and artist_name fields."
         raw_response = model.generate_content(prompt).text
         # print(raw_response)
         raw_response = raw_response.replace("```json", "").replace("```", "").strip()
